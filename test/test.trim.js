@@ -13,9 +13,14 @@ function saveToFileIfDebug (buffer, file) {
     }
 }
 
+function readSrc(file, mode) {
+    var path = require('path').join(__dirname, file);
+    return require('fs').readFileSync(path, mode);
+}
+
 test( 'trim default', function (t) {
     var buffer = imagemagick.convert({
-        srcData: require('fs').readFileSync( "test.trim.jpg" ), // 87x106
+        srcData: readSrc( "test.trim.jpg" ), // 87x106
         format: 'PNG',
         trim: true,
         debug: debug
@@ -30,7 +35,7 @@ test( 'trim default', function (t) {
 
 test( 'trim exact color fuzz', function (t) {
     var buffer = imagemagick.convert({
-        srcData: require('fs').readFileSync( "test.trim.jpg" ), // 87x106
+        srcData: readSrc( "test.trim.jpg" ), // 87x106
         format: 'PNG',
         trim: true,
         trimFuzz: 0,
@@ -46,7 +51,7 @@ test( 'trim exact color fuzz', function (t) {
 
 test( 'trim half color fuzz', function (t) {
     var buffer = imagemagick.convert({
-        srcData: require('fs').readFileSync( "test.trim.jpg" ), // 87x106
+        srcData: readSrc( "test.trim.jpg" ), // 87x106
         format: 'PNG',
         trim: true,
         trimFuzz: 0.5,
@@ -62,7 +67,7 @@ test( 'trim half color fuzz', function (t) {
 
 test( 'trim 92% color fuzz', function (t) {
     var buffer = imagemagick.convert({
-        srcData: require('fs').readFileSync( "test.trim.jpg" ), // 87x106
+        srcData: readSrc( "test.trim.jpg" ), // 87x106
         format: 'PNG',
         trim: true,
         trimFuzz: 0.92,
@@ -78,7 +83,7 @@ test( 'trim 92% color fuzz', function (t) {
 
 test( 'trim half color fuzz resize', function (t) {
     var buffer = imagemagick.convert({
-        srcData: require('fs').readFileSync( "test.trim.jpg" ), // 87x106
+        srcData: readSrc( "test.trim.jpg" ), // 87x106
         format: 'PNG',
         trim: true,
         trimFuzz: 0.5,

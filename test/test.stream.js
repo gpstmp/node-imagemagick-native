@@ -8,6 +8,21 @@ var test        = require('tap').test
 console.log("image magick's version is: " + imagemagick.version());
 var versions = imagemagick.version().split(".");
 
+function readSrc(file, mode) {
+    var path = require('path').join(__dirname, file);
+    return require('fs').readFileSync(path, mode);
+}
+
+function readStream(file) {
+    var path = require('path').join(__dirname, file);
+    return require('fs').createReadStream(path);
+}
+
+function writeStream(file) {
+    var path = require('path').join(__dirname, file);
+    return require('fs').createWriteStream(path);
+}
+
 test( 'stream.convert returns a stream like object', function (t) {
     t.plan(2);
     var stream = imagemagick.streams.convert({
@@ -35,12 +50,12 @@ test( 'stream.convert can pipes streams', function (t) {
         debug: debug
     });
 
-    var input = fs.createReadStream('test.png');
-    var output = fs.createWriteStream('test-async-temp.png');
+    var input = readStream('test.png');
+    var output = writeStream('test-async-temp.png');
 
     output.on('close',function(){
         var ret = imagemagick.identify({
-            srcData: fs.readFileSync( 'test-async-temp.png' )
+            srcData: readSrc( 'test-async-temp.png' )
         });
         t.equal( ret.width, 100 );
         t.equal( ret.height, 100 );

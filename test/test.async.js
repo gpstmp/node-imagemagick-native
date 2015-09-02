@@ -14,10 +14,15 @@ function saveToFileIfDebug (buffer, file) {
     }
 }
 
+function readSrc(file, mode) {
+    var path = require('path').join(__dirname, file);
+    return require('fs').readFileSync(path, mode);
+}
+
 test( 'convert filter Lagrange', function (t) {
     t.plan(1);
     imagemagick.convert({
-        srcData: require('fs').readFileSync( "test.png" ), // 58x66
+        srcData: readSrc("test.png"), // 58x66
         width: 100,
         height: 100,
         filter: 'Lagrange',
@@ -34,7 +39,7 @@ test( 'convert filter Lagrange', function (t) {
 test( 'identify results async', function (t) {
     t.plan(5);
     imagemagick.identify({
-        srcData: require('fs').readFileSync( "test.png" )
+        srcData: readSrc("test.png")
     },function(err,info){
         t.equal( info.width, 58, 'width is 58' );
         t.equal( info.height, 66, 'height is 66' );
@@ -48,8 +53,8 @@ test( 'identify results async', function (t) {
 test( 'composite async', function (t) {
     t.plan(1);
     imagemagick.composite({
-        srcData: require('fs').readFileSync( "test.quantizeColors.png" ),
-        compositeData: require('fs').readFileSync("test.png"),
+        srcData: readSrc("test.quantizeColors.png"),
+        compositeData: readSrc("test.png"),
         debug: debug
     },function(err,buffer){
         t.equal( Buffer.isBuffer(buffer), true, 'buffer is Buffer' );
